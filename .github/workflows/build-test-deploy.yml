@@ -13,3 +13,16 @@ jobs:
           node-version: '18.x'
       - run: npm install
       - run: npm run build 
+      #NOTE THAT JOBS ARE COMPLETELY INDEPENDENT OF EACH OTHER BY DEFAULT, STEPS ARE LOCAL SCOPED TO EACH JOB
+  test: 
+    needs: build #pre-requisite job for test, would only run if build job execution is successful(SINCE JOBS ARE INDEPENDENT WE NEED THIS)
+    runs-on: ubuntu-latest
+    steps: 
+      - name: checkout repo
+        uses: actions/checkout@v3
+      - name: use node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - run: npm install
+      - run: npm test
