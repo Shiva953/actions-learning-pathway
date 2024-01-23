@@ -1,0 +1,15 @@
+name: build-test-deploy
+on: push
+jobs: 
+  build: #executes the build process on commit push
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Check out repository code
+        uses: actions/checkout@v3 #(checkout action, to access the code in our repo)
+      - run: echo "$(cat hello_world.txt)" # now we'll setup a CI/CD Workflow
+      - name: use node.js 
+        uses: actions/setup-node@v3 #setup node action(since we're using nodejs)
+        with:
+          node-version: '18.x'
+      - run: npm install
+      - run: npm run build 
