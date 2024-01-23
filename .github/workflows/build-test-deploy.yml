@@ -15,7 +15,7 @@ jobs:
       - run: npm run build 
       #NOTE THAT JOBS ARE COMPLETELY INDEPENDENT OF EACH OTHER BY DEFAULT, STEPS ARE LOCAL SCOPED TO EACH JOB
   test: 
-    needs: build #pre-requisite job for test, would only run if build job execution is successful(SINCE JOBS ARE INDEPENDENT WE NEED THIS)
+     #pre-requisite job for test, would only run if build job execution is successful(SINCE JOBS ARE INDEPENDENT WE NEED THIS)
     runs-on: ubuntu-latest
     steps: 
       - name: checkout repo
