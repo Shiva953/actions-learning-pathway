@@ -27,3 +27,40 @@ jobs:
           node-version: '18.x'
       - run: npm install
       - run: npm test
+  deploy: #build -> test -> deploy(final job)
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write     
+      id-token: write
+    environment:
+      name: production
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: checkout repo #STEP1
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: use node.js #STEP2
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          
+      - name: configure github pages #STEP3 TO CONFIGURE GITHUB PAGES FOR OUR APP DEPLOYMENT
+        uses: actions/configure-pages@v3
+        with:
+          static_site_generator: next
+          
+      - run: npm install
+      - run: npm run build 
+
+      - name: upload artifacts #STEP4(uploading the final static page build(inside ./out directory for nextjs app) to github pages
+        uses: actions/upload-pages-artifact@v1
+        with: 
+          path: "./out"
+          
+      - name: deploy #STEP5(FINALLY DEPLOY)
+        id: deployment
+        uses: actions/deploy-pages@v1
